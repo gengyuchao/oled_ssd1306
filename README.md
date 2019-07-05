@@ -76,10 +76,16 @@ Use macro definitions to switch between different ways of using in "user_oled_co
 
 SSD1306I2C display(ADDRESS, SCL, SDA);
 ```
-for esp8266-idf
+
+```C++
+for esp8266-idf 
+
  SSD1306I2C display(0x3c,GPIO_NUM_5,GPIO_NUM_4);// OLED_Address SCL SDA 
-for stm32
- SSD1306I2C  display(0x3c, GPIO_Pin_10, GPIO_Pin_11); //OLED_Address SCL SDA
+
+for stm32 
+
+ SSD1306I2C  display(0x3c, GPIO_Pin_10, GPIO_Pin_11); //OLED_Address SCL SDA 
+```
 
 
 
