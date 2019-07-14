@@ -68,6 +68,53 @@ Use macro definitions to switch between different ways of using in "user_oled_co
 
  If you don't use the FreeRTOS operating system, you need to override the millis() function yourself.
 
+ example for stm32
+ ```C++
+
+uint32_t millisecond_count=0;//系统启动后的毫秒级计时器所用变量
+
+ /*-----------------------------------------------------------*/
+//定时器中断
+void TIM2_IRQHandler()
+{
+	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)  
+    {  
+				millisecond_count++;
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update ); //清除 TIM2 更新中断标志
+		}
+}
+	
+
+/*-----------------------------------------------------------*/
+
+//arr：自动重装值。  
+//psc：时钟预分频数  
+void TIM2_Int_Init(u16 arr,u16 psc)  
+{  
+    TIM_TimeBaseInitTypeDef TIM_ist;  
+  
+	NVIC_InitTypeDef NVIC_InitStructure;
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE); //①时钟 TIM2 使能  
+	//定时器 TIM2 初始化  
+	TIM_ist.TIM_Period = arr; //设置自动重装载寄存器周期的值  
+	TIM_ist.TIM_Prescaler =psc; //设置时钟频率除数的预分频值  
+	TIM_ist.TIM_ClockDivision = TIM_CKD_DIV1; //设置时钟分割  
+	TIM_ist.TIM_CounterMode = TIM_CounterMode_Up; //TIM 向上计数  
+	TIM_TimeBaseInit(TIM2, &TIM_ist);  //②初始化 TIM2  
+	TIM_ITConfig(TIM2,TIM_IT_Update,ENABLE );  //③允许更新中断  
+	
+	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQChannel;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init( &NVIC_InitStructure );	
+	TIM_ITConfig( TIM2, TIM_IT_Update, ENABLE );
+      
+    TIM_Cmd(TIM2, ENABLE);  //⑤使能 TIM2  
+}  
+
+```
+
 ### I2C 
 
 ```C++
