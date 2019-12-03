@@ -142,7 +142,7 @@
 		I2C_TypeDef *I2Cx;
 	};
 
-#elif defined(__ESP8266_IDF__) 
+#elif defined(__ESP8266_IDF__) || defined(__ESP32_IDF__) 
 
 #include "driver/gpio.h"
 #define PinName gpio_num_t
@@ -156,7 +156,7 @@
 class I2C
 {
 public:
-	//在STM32F103系列中 只有端口B有硬件IIC功能 故默认使用GPIOB
+	//
 	I2C(PinName scl, PinName sda)
 	{
 		_sda = sda;
@@ -169,7 +169,7 @@ public:
 	{
 		gpio_config_t io_conf;
 
-		printf("init oled i2c\n");
+		DEBUG_OLEDDISPLAY("init oled i2c\n");
 		// disable interrupt
 		io_conf.intr_type = GPIO_INTR_DISABLE;
 		// set as output mode
@@ -186,14 +186,14 @@ public:
 		ESP_ERROR_CHECK(gpio_set_level(sda_io_num, 1));
 		ESP_ERROR_CHECK(gpio_set_level(scl_io_num, 1));
 
-		printf("\nOLED_SDA_GPIO:%d  OLED_SCL_GPIO:%d",sda_io_num,scl_io_num);
+		DEBUG_OLEDDISPLAY("\nOLED_SDA_GPIO:%d  OLED_SCL_GPIO:%d",sda_io_num,scl_io_num);
 
 		return ESP_OK;
 	}
 
 	void frequency(uint32_t freq)
 	{
-		printf("ESP8266 I2C Frequency has always been the fastest.\n");
+		DEBUG_OLEDDISPLAY("ESP8266/ESP32 I2C Frequency has always been the fastest.\n");
 	}
 
 /*------IIC Base function------*/

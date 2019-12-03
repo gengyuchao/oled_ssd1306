@@ -39,6 +39,8 @@
 
 #elif defined(__ESP8266_IDF__) 
 
+#elif defined(__ESP32_IDF__) 
+
 #else
 #error "Unkown operating system"
 #endif

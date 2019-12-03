@@ -62,6 +62,8 @@ Use macro definitions to switch between different ways of using in "user_oled_co
 
  define __ESP8266_IDF__     //ESP-IDF Support
 
+ define __ESP32_IDF__       //ESP-IDF Support
+
  define __STM32F103__       //Stm32 Support
 
  define __USE_FreeRTOS__    //FreeRTOS Support

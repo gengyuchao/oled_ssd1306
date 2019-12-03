@@ -410,6 +410,31 @@ void OLEDDisplay::drawProgressBar(uint16_t x, uint16_t y, uint16_t width, uint16
   fillCircle(xRadius + maxProgressWidth, yRadius, innerRadius);
 }
 
+void OLEDDisplay::drawWaitingBar(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t progress) {
+  uint16_t radius = height / 2;
+  uint16_t xRadius = x + radius;
+  uint16_t yRadius = y + radius;
+  uint16_t doubleRadius = 2 * radius;
+  uint16_t innerRadius = radius - 2;
+
+  OLEDDISPLAY_COLOR  oled_pen_color_back = getColor();
+  setColor(WHITE);
+  drawCircleQuads(xRadius, yRadius, radius, 0b00000110);
+  drawHorizontalLine(xRadius, y, width - doubleRadius + 1);
+  drawHorizontalLine(xRadius, y + height, width - doubleRadius + 1);
+  drawCircleQuads(x + width - radius, yRadius, radius, 0b00001001);
+
+  uint16_t bar_width = (width - doubleRadius + 1)/5;
+  uint16_t maxProgressWidth = (width - doubleRadius - bar_width + 2) * progress / 100;
+  uint16_t start_x = xRadius + maxProgressWidth;
+
+  fillCircle(start_x, yRadius, innerRadius);
+  fillRect(start_x + 1, y + 2, bar_width, height - 3);
+  fillCircle(start_x + bar_width, yRadius, innerRadius);
+
+  setColor(oled_pen_color_back);//recover the color back before
+}
+
 void OLEDDisplay::drawFastImage(int16_t xMove, int16_t yMove, int16_t width, int16_t height, const uint8_t *image) {
   drawInternal(xMove, yMove, width, height, image, 0, 0);
 }

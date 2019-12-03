@@ -45,9 +45,8 @@
 #ifdef __USE_FreeRTOS__
 
 	/* Scheduler includes. */
-	#include "FreeRTOS.h"
-	#include "task.h"
-	#include "queue.h"
+  #include "freertos/FreeRTOS.h"
+  #include "freertos/task.h"
 	
 	#define oled_malloc pvPortMalloc
 	#define oled_free	vPortFree
@@ -100,7 +99,7 @@
   };
 
 //ESP8266-IDF_SDK support
-#elif defined(__ESP8266_IDF__) 
+#elif defined(__ESP8266_IDF__) || defined(__ESP32_IDF__) 
 
 #define pgm_read_byte(addr)   (*(const unsigned char *)(addr))
 
@@ -142,7 +141,7 @@ private:
 
 
 
-#define DEBUG_OLEDDISPLAY(...) printf( __VA_ARGS__ )
+// #define DEBUG_OLEDDISPLAY(...) printf( __VA_ARGS__ )
 //#define DEBUG_OLEDDISPLAY(...) dprintf("%s",  __VA_ARGS__ )
 
 #ifndef DEBUG_OLEDDISPLAY
@@ -283,6 +282,10 @@ class OLEDDisplay {
     // a unsigned byte value between 0 and 100
     void drawProgressBar(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t progress);
 
+    // Draw a circular waiting bar with a fill length of 1/5 of its width and its outer dimensions given 
+    // by the width and height.  Progress is a unsigned byte value between 0 and 100
+    void drawWaitingBar(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint8_t progress);
+    
     // Draw a bitmap in the internal image format
     void drawFastImage(int16_t x, int16_t y, int16_t width, int16_t height, const uint8_t *image);
 

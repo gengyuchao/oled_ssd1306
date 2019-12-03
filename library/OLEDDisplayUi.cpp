@@ -244,9 +244,7 @@ unsigned long millis()
 	#endif
 }
 int8_t OLEDDisplayUi::update(){
-#if defined(__STM32F103__) 
-  unsigned long frameStart = millis();// 当前运行的时间记录 微秒
-#elif defined(__ESP8266_IDF__) 
+#if defined(__STM32F103__) || defined(__ESP8266_IDF__) ||  defined(__ESP32_IDF__) 
   unsigned long frameStart = millis();// 当前运行的时间记录 微秒
 #else
 #error "Unkown operating system"
@@ -259,9 +257,7 @@ int8_t OLEDDisplayUi::update(){
     this->state.lastUpdate = frameStart;
     this->tick();
   }
-#if defined(__STM32F103__) 
-  return this->updateInterval - (millis() - frameStart);
-#elif defined(__ESP8266_IDF__) 
+#if defined(__STM32F103__) || defined(__ESP8266_IDF__) ||  defined(__ESP32_IDF__) 
   return this->updateInterval - (millis() - frameStart);
 #else
 #error "Unkown operating system"
