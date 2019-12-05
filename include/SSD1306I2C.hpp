@@ -173,7 +173,13 @@ public:
 		// disable interrupt
 		io_conf.intr_type = GPIO_INTR_DISABLE;
 		// set as output mode
+		#if defined(__ESP8266_IDF__) 
 		io_conf.mode = GPIO_MODE_OUTPUT_OD;
+		#elif defined(__ESP32_IDF__) 
+		io_conf.mode = GPIO_MODE_INPUT_OUTPUT_OD;
+		#else
+		#error "Unkown operating system"
+		#endif
 		// bit mask of the pins that you want to set
 		io_conf.pin_bit_mask = (1ULL << sda_io_num)|(1ULL << scl_io_num);
 		// disable pull-down mode
@@ -197,11 +203,11 @@ public:
 	}
 
 /*------IIC Base function------*/
-// #define delay_us os_delay_us //慢速模式，确保I2C稳定
-	void delay_us(int xus)//超高速模式,减少延时时间
+	//#define delay_us ets_delay_us //慢速模式，确保I2C稳定
+	inline void delay_us(int xus)//超高速模式,减少延时时间
 	{
-	// volatile uint8_t i;
-	// for(i=0;i<xus;i++);
+		// volatile uint8_t i;
+		// for(i=0;i<xus*10;i++);
 	}
 	
 	//开始信号
@@ -426,7 +432,7 @@ public:
 private:
 	int getBufferOffset(void)
 	{
-		return 0;
+		return 1;
 	}
 
 	inline void sendCommand(uint8_t command) __attribute__((always_inline))

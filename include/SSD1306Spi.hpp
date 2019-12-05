@@ -224,7 +224,7 @@ class SSD1306Spi : public OLEDDisplay {
 
   private:
 	int getBufferOffset(void) {
-		return 0;
+		return 1;
 	}
     inline void sendCommand(uint8_t com) __attribute__((always_inline)){
       esp_err_t ret;
