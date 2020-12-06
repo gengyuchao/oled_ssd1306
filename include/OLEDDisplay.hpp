@@ -302,6 +302,8 @@ class OLEDDisplay {
     // The text will be wrapped to the next line at a space or dash
     void drawStringMaxWidth(int16_t x, int16_t y, uint16_t maxLineWidth, String text);
 
+    void draw_to_console(String strUser);
+
     // Returns the width of the const char* with the current
     // font settings
     uint16_t getStringWidth(const char* text, uint16_t length);
